@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './components/Navbar';
+import Search from './components/Search';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,6 +12,7 @@ function App() {
     <>
       <Navbar />
       <main style={{ padding: "1rem" }}>
+        <Search />
         <p>Project setup complete. Ready to integrate GitHub API 🚀</p>
       </main>
       <div>
