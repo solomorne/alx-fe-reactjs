@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchUsers } from "../services/githubService";
+import { searchUsers, fetchUserData } from "../services/githubService";
 
 const Search = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,6 @@ const Search = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setError(false);
     setUsers([]);
@@ -27,7 +26,13 @@ const Search = () => {
 
     try {
       const data = await searchUsers(formData, 1);
-      setUsers(data.items);
+
+      // 🔥 Fetch full user details using fetchUserData
+      const detailedUsers = await Promise.all(
+        data.items.map((user) => fetchUserData(user.login))
+      );
+
+      setUsers(detailedUsers);
     } catch {
       setError(true);
     } finally {
@@ -38,7 +43,12 @@ const Search = () => {
   const loadMore = async () => {
     const nextPage = page + 1;
     const data = await searchUsers(formData, nextPage);
-    setUsers((prev) => [...prev, ...data.items]);
+
+    const detailedUsers = await Promise.all(
+      data.items.map((user) => fetchUserData(user.login))
+    );
+
+    setUsers((prev) => [...prev, ...detailedUsers]);
     setPage(nextPage);
   };
 
@@ -79,7 +89,11 @@ const Search = () => {
       </form>
 
       {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">Looks like we cant find the user</p>}
+      {error && (
+        <p className="text-center text-red-500">
+          Looks like we cant find the user
+        </p>
+      )}
 
       <ul className="grid gap-4">
         {users.map((user) => (
@@ -93,7 +107,13 @@ const Search = () => {
               className="w-16 h-16 rounded-full"
             />
             <div>
-              <h3 className="font-semibold">{user.login}</h3>
+              <h3 className="font-semibold">{user.name || user.login}</h3>
+              <p className="text-sm text-gray-600">
+                📍 {user.location || "Location not available"}
+              </p>
+              <p className="text-sm text-gray-600">
+                📦 Repos: {user.public_repos}
+              </p>
               <a
                 href={user.html_url}
                 target="_blank"
