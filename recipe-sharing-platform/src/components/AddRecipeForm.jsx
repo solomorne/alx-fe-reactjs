@@ -19,7 +19,8 @@ function AddRecipeForm() {
     if (!ingredients.trim()) {
       newErrors.ingredients = "Ingredients are required.";
     } else if (ingredients.split(",").length < 2) {
-      newErrors.ingredients = "Please include at least two ingredients separated by commas.";
+      newErrors.ingredients =
+        "Please include at least two ingredients separated by commas.";
     }
 
     if (!steps.trim()) {
@@ -31,7 +32,6 @@ function AddRecipeForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length > 0) {
@@ -39,16 +39,8 @@ function AddRecipeForm() {
       return;
     }
 
-    // Simulate submission (since no backend yet)
-    console.log("New Recipe Submitted:", {
-      title,
-      ingredients,
-      steps,
-    });
-
     alert("Recipe submitted successfully! 🎉");
 
-    // Reset form
     setTitle("");
     setIngredients("");
     setSteps("");
@@ -58,10 +50,10 @@ function AddRecipeForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8">
+    <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-8">
+      <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-6 md:p-10">
 
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">
           Add New Recipe 🍳
         </h1>
 
@@ -127,7 +119,7 @@ function AddRecipeForm() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300"
+            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 md:w-auto md:px-8"
           >
             Submit Recipe
           </button>
