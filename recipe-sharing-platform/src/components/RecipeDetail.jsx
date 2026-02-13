@@ -1,12 +1,18 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import recipesData from "../data.json";
 
 function RecipeDetail() {
   const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
 
-  const recipe = recipesData.find(
-    (recipe) => recipe.id === parseInt(id)
-  );
+  useEffect(() => {
+    const selectedRecipe = recipesData.find(
+      (item) => item.id === parseInt(id)
+    );
+
+    setRecipe(selectedRecipe);
+  }, [id]); // runs whenever id changes
 
   if (!recipe) {
     return (
@@ -47,7 +53,7 @@ function RecipeDetail() {
         </div>
 
         {/* Instructions */}
-        <div className="mb-6">
+        <div>
           <h2 className="text-2xl font-semibold mb-3">
             Instructions
           </h2>
@@ -60,7 +66,7 @@ function RecipeDetail() {
 
         <Link
           to="/"
-          className="inline-block mt-4 text-blue-500 font-medium hover:underline"
+          className="inline-block mt-6 text-blue-500 font-medium hover:underline"
         >
           ← Back to Recipes
         </Link>
