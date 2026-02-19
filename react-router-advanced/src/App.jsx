@@ -14,6 +14,16 @@ const BlogPost = () => {
   );
 }
 
+const toggleLogin = () => {
+  if (localStorage.getItem('user')) {
+    localStorage.removeItem('user');
+  } else {
+    localStorage.setItem('user', JSON.stringify({ name: 'User123' }));
+  }
+  // Force a re-render to update the route protection
+  window.location.reload(); 
+};
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
