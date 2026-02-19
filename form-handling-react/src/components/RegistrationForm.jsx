@@ -1,66 +1,76 @@
 import { useState } from 'react';
 
 const RegistrationForm = () => {
-  // Individual state hooks for each field
+  // Individual state for each input
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  const [error, setError] = useState('');
+  // State for handling error messages
+  const [errors, setErrors] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Simple validation: check if any field is empty
-    if (!username || !email || !password) {
-      setError('Please fill in all fields.');
+    // Explicit manual validation logic
+    if (!username) {
+      setErrors('Username is required');
       return;
     }
 
-    setError('');
-    console.log('Controlled Form Submitted:', { username, email, password });
-    alert('Success! Check the console for your data.');
+    if (!email) {
+      setErrors('Email is required');
+      return;
+    }
+
+    if (!password) {
+      setErrors('Password is required');
+      return;
+    }
+
+    // If validation passes
+    setErrors('');
+    console.log('User Registered:', { username, email, password });
+    alert('Registration Successful!');
   };
 
   return (
-    <form onSubmit={handleSubmit} style={formStyles}>
-      <h2>Controlled Registration</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div style={containerStyles}>
+      <h2>Manual Registration</h2>
+      
+      {errors && <p style={{ color: 'red', fontWeight: 'bold' }}>{errors}</p>}
 
-      <input 
-        type="text" 
-        placeholder="Username" 
-        value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
-      />
+      <form onSubmit={handleSubmit} style={formStyles}>
+        <label>Username:</label>
+        <input 
+          type="text" 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
+        />
 
-      <input 
-        type="email" 
-        placeholder="Email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-      />
+        <label>Email:</label>
+        <input 
+          type="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+        />
 
-      <input 
-        type="password" 
-        placeholder="Password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-      />
+        <label>Password:</label>
+        <input 
+          type="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+        />
 
-      <button type="submit">Register</button>
-    </form>
+        <button type="submit" style={buttonStyles}>Register</button>
+      </form>
+    </div>
   );
 };
 
-const formStyles = {
-  display: 'flex', 
-  flexDirection: 'column', 
-  gap: '12px', 
-  maxWidth: '300px',
-  padding: '20px',
-  border: '1px solid #ccc',
-  borderRadius: '8px'
-};
+// Simple styles for clarity
+const containerStyles = { maxWidth: '400px', margin: '20px auto', fontFamily: 'Arial' };
+const formStyles = { display: 'flex', flexDirection: 'column', gap: '10px' };
+const buttonStyles = { padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', cursor: 'pointer' };
 
 export default RegistrationForm;
