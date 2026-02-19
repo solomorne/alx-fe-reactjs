@@ -2,54 +2,44 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-// Validation Schema using Yup
-const RegistrationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, 'Too Short!')
-    .required('Username is required'),
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+// Define the validation schema using Yup
+const validationSchema = Yup.object({
+  username: Yup.string().required('Username is required'),
+  email: Yup.string().email('Invalid email format').required('Email is required'),
+  password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
 
 const FormikForm = () => {
   return (
-    <div style={{ maxWidth: '300px', marginTop: '40px' }}>
-      <h2>Formik + Yup Form</h2>
+    <div style={containerStyles}>
+      <h2>Formik Registration</h2>
+      
       <Formik
         initialValues={{ username: '', email: '', password: '' }}
-        validationSchema={RegistrationSchema}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          // Simulating API Call
-          setTimeout(() => {
-            console.log('Mock API Submission (Formik):', values);
-            alert('Registration Successful (Formik)!');
-            setSubmitting(false);
-            resetForm();
-          }, 1000);
+          // Simulating an API call
+          console.log('Formik Submission:', values);
+          alert('Registration Successful via Formik!');
+          setSubmitting(false);
+          resetForm();
         }}
       >
         {({ isSubmitting }) => (
-          <Form style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div>
-              <Field type="text" name="username" placeholder="Username" />
-              <ErrorMessage name="username" component="div" style={{ color: 'red', fontSize: '12px' }} />
-            </div>
+          <Form style={formStyles}>
+            <label htmlFor="username">Username</label>
+            <Field type="text" name="username" />
+            <ErrorMessage name="username" component="div" style={errorStyle} />
 
-            <div>
-              <Field type="email" name="email" placeholder="Email" />
-              <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '12px' }} />
-            </div>
+            <label htmlFor="email">Email</label>
+            <Field type="email" name="email" />
+            <ErrorMessage name="email" component="div" style={errorStyle} />
 
-            <div>
-              <Field type="password" name="password" placeholder="Password" />
-              <ErrorMessage name="password" component="div" style={{ color: 'red', fontSize: '12px' }} />
-            </div>
+            <label htmlFor="password">Password</label>
+            <Field type="password" name="password" />
+            <ErrorMessage name="password" component="div" style={errorStyle} />
 
-            <button type="submit" disabled={isSubmitting}>
+            <button type="submit" disabled={isSubmitting} style={buttonStyles}>
               {isSubmitting ? 'Submitting...' : 'Register'}
             </button>
           </Form>
@@ -58,5 +48,11 @@ const FormikForm = () => {
     </div>
   );
 };
+
+// Styles for consistency
+const containerStyles = { maxWidth: '400px', margin: '20px auto', fontFamily: 'Arial' };
+const formStyles = { display: 'flex', flexDirection: 'column', gap: '10px' };
+const errorStyle = { color: 'red', fontSize: '12px', marginTop: '-8px' };
+const buttonStyles = { padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', cursor: 'pointer', marginTop: '10px' };
 
 export default FormikForm;
