@@ -37,15 +37,18 @@ const TodoList = () => {
         <button type="submit">Add</button>
       </form>
       <ul>
-        {todos.map(todo => (
-          <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-            <span onClick={() => toggleTodo(todo.id)} data-testid="todo-text">
-              {todo.text}
-            </span>
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+  {todos.map(todo => (
+    <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+      <span 
+        onClick={() => toggleTodo(todo.id)} 
+        data-testid={`todo-item-${todo.id}`} // Unique IDs for testing
+      >
+        {todo.text}
+      </span>
+      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+    </li>
+  ))}
+</ul>
     </div>
   );
 };
